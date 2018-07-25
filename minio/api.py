@@ -202,10 +202,13 @@ class Minio(object):
         """
         if not (app_name and app_version):
             raise ValueError('app_name and app_version cannot be empty.')
-
-        app_info = _APP_INFO.format(app_name,
+        
+        if app_name.lower() == "user-agent" and app_version != "":
+            self._user_agent = app_version
+        else:
+            app_info = _APP_INFO.format(app_name,
                                     app_version)
-        self._user_agent = ' '.join([_DEFAULT_USER_AGENT, app_info])
+            self._user_agent = ' '.join([_DEFAULT_USER_AGENT, app_info])
 
     # enable HTTP trace.
     def trace_on(self, stream):
